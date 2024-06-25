@@ -16,7 +16,7 @@ import ItemTypeImageIcon from "@/components/ItemTypeImageIcon";
 const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASEURL;
 declare let window: any;
 
-const NftDetailPage = ({}) => {
+const NftDetailPage = ({ }) => {
   const userId = Cookies.get("userId");
   const token = Cookies.get("loginToken");
   const wallet = Cookies.get("wallet");
@@ -37,7 +37,7 @@ const NftDetailPage = ({}) => {
       toast.error("Please connect wallet to buy NFT");
       return;
     }
-    const provider = new ethers.BrowserProvider(window.ethereum);
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
     const signer = await provider.getSigner();
 
     const contract = new ethers.Contract(
@@ -45,7 +45,7 @@ const NftDetailPage = ({}) => {
       ABI,
       signer
     );
-    const priceInt = ethers.parseEther(data[0].price ? data[0].price : "0.0");
+    const priceInt = ethers.utils.parseEther(data[0].price ? data[0].price : "0.0");
 
     try {
       const transaction = await contract.buyNFT(data[0].token_id, {
