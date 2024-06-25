@@ -48,7 +48,8 @@ const MainNav2Logged: FC<MainNav2LoggedProps> = () => {
       <div className="container">
         <div className="h-20 flex justify-between space-x-4 xl:space-x-8">
           <div className="self-center flex justify-start flex-grow space-x-3 sm:space-x-8 lg:space-x-10">
-            <Logo />
+            {/* <Logo /> */}
+            <h1 className="text-2xl font-bold">Marketplace</h1>
             {/* <div className="hidden sm:block flex-grow max-w-xs">
               <form action="" method="POST" className="relative">
                 <Input

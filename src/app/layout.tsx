@@ -8,6 +8,7 @@ import { UserProvider } from "@/context/userContext";
 import { Toaster } from "sonner";
 import Providers from "@/utils/queryProvider";
 import NextTopLoader from "nextjs-toploader";
+import AppContextProvider from "@/context/AppContext";
 const poppins = Poppins({
   subsets: ["latin"],
   display: "swap",
@@ -15,8 +16,8 @@ const poppins = Poppins({
 });
 
 export const metadata = {
-  title: "Nosh - NFT Marketplace",
-  description: "Nosh NFT Marketplace",
+  title: "NFT Marketplace",
+  description: "NFT Marketplace",
 };
 
 export default function RootLayout({
@@ -31,7 +32,9 @@ export default function RootLayout({
         <Providers>
           <UserProvider>
             <SiteHeader />
-            {children}
+            <AppContextProvider>
+              {children}
+            </AppContextProvider>
             <Footer />
             <Toaster
               position="bottom-left"

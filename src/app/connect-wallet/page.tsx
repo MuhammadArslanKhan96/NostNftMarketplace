@@ -7,6 +7,7 @@ import { toast } from "sonner";
 import { useUserContext } from "@/hooks/useUserContext";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/hooks/useAuth";
+import { useAppContext } from "@/context/AppContext";
 declare let window: any;
 
 const plans = [
@@ -15,16 +16,19 @@ const plans = [
     img: metamaskImg,
   },
 ];
-const PageConnectWallet = ({}) => {
+const PageConnectWallet = ({ }) => {
+  const { getEthersInstance, getWalletFunction } = useAppContext();
   useAuth();
   const { user, setUser } = useUserContext();
   const router = useRouter();
 
-  const getWalletFunction = () => {
+  const getWallet = () => {
     if (window.ethereum) {
+      const networkId = 80002;
+      getWalletFunction();
       window.ethereum
         .request({ method: "eth_requestAccounts" })
-        .then((res: string[]) => {
+        .then(async (res: string[]) => {
           const wallet = res.length > 0 ? String(res[0]) : null;
           if (wallet) {
             Cookies.set("wallet", wallet, {
@@ -33,6 +37,9 @@ const PageConnectWallet = ({}) => {
             setUser({
               ...user,
               wallet: wallet,
+            });
+            await getEthersInstance(networkId).catch((error: any) => {
+              console.error("Error:", error);
             });
             router.push("/");
             toast.success("Wallet connected");
@@ -67,7 +74,7 @@ const PageConnectWallet = ({}) => {
               {plans.map((plan) => (
                 <div
                   key={plan.name}
-                  onClick={getWalletFunction}
+                  onClick={getWallet}
                   typeof="button"
                   tabIndex={0}
                   className="relative rounded-xl hover:shadow-lg border 
